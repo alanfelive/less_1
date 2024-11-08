@@ -1,5 +1,5 @@
 #include <stdio.h>
- 
+// воспользовался готовым решением
 int main(void)
 {
 char a=' ';
