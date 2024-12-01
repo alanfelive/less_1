@@ -35,7 +35,7 @@ int main(void)
         }
     }
     fclose(source);
-    print(temperature_information, num_row);
+    // print(temperature_information, num_row);
     // printf("Введите номер месяца:\n");
     printf("Введите год:\n");
     // scanf("%d", &M_in);
@@ -43,13 +43,13 @@ int main(void)
     float mean_temp_M = AverageMonthlyTemperature(temperature_information, num_row, M_in);
     // int min_temp_M = MinimumTemperatureInAMonth(temperature_information, num_row, M_in);
     // int max_temp_M = MaximumTemperatureInAMonth(temperature_information, num_row, M_in);
-    float mean_temp_Y = AverageAnnualTemperature(temperature_information, num_row, Y);
+    // float mean_temp_Y = AverageAnnualTemperature(temperature_information, num_row, Y);
     // int min_temp_Y = MinimumTemperatureForTheYear(temperature_information, num_row, Y);
     // int max_temp_Y = MaximumTemperatureForTheYear(temperature_information, num_row, Y);
-    // printf("Средняя температура месяц %.1f", mean_temp_M);
+    printf("Средняя температура месяц %.1f", mean_temp_M);
     // printf("Минимальная температура месяц %d", min_temp_M);
     // printf("Максимальная температура месяц %d", max_temp_M);
-    printf("Средняя температура за год %.1f", mean_temp_Y);
+    // printf("Средняя температура за год %.1f", mean_temp_Y);
     // printf("Минимальная температура год %d", min_temp_Y);
     // printf("Максимальная температура год %d", max_temp_Y);
     return 0;
