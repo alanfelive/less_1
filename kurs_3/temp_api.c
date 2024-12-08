@@ -14,8 +14,7 @@ float AverageMonthlyTemperature(struct sensor *temp_info, long int N, int M, int
         }
     if (!counter)
         return 1000;
-    // return sum_temp / counter;
-    return counter;
+    return sum_temp / counter;
 }
 
 float MinimumTemperatureInAMonth(struct sensor *temp_info, int N, int M, int Y)
