@@ -19,7 +19,12 @@ int main(int argc, char *argv[])
     char filename[50], type_stat[6];
     int rez = 0, inp_month = 0, inp_year = 0, flag = 0;
     opterr = 0;
-    while ((rez = getopt(argc, argv, "hs:f:m::y::")) != -1)
+    if (argc <= 1)
+    {
+        printf("Не заданы параметры! Для помощи запустите программу с ключом -h");
+        return 0;
+    }
+    while ((rez = getopt(argc, argv, "hf:m::y::s:")) != -1)
     {
         switch (rez)
         {
@@ -29,7 +34,7 @@ int main(int argc, char *argv[])
                         -f - файл с данными датчика температуры;\n\
                         -m - месяц (по умолчанию текущий);\n\
                         -y - год (по умолчанию текущий)\n\
-                        -s - статистика по температуре за период:\n\
+                        -s - статистика по температуре:\n\
                             mean - средняя за период,\n\
                             max - максимальная за период,\n\
                             min - минимальная за период.\n\
@@ -63,13 +68,13 @@ int main(int argc, char *argv[])
             break;
             case '?':
                 printf("Ошибка ввода параметров! Используйте параметр -h для просмотра справки\n");
+                return 0;
             break;
         }
     }
     source = fopen(filename, "r");
     if (source == NULL)
     {
-        fprintf(stderr, "Нет такого файла: %s\n", strerror(errno));
         return 1;
     }
     struct sensor *temp_info = calloc(MAX, sizeof(struct sensor));
