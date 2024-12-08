@@ -16,7 +16,7 @@ int main(int argc, char *argv[])
     time_t current_time = time(NULL);
     FILE *source = NULL;
     struct tm *now = localtime(&current_time);
-    char filename[50], type_stat[6];
+    char filename[50];
     int rez = 0, inp_month = 0, inp_year = 0, flag = 0;
     opterr = 0;
     if (argc <= 1)
@@ -24,7 +24,7 @@ int main(int argc, char *argv[])
         printf("Не заданы параметры! Для помощи запустите программу с ключом -h");
         return 0;
     }
-    while ((rez = getopt(argc, argv, "hf:m::y::s:")) != -1)
+    while ((rez = getopt(argc, argv, "hf:m::y::")) != -1)
     {
         switch (rez)
         {
@@ -34,11 +34,7 @@ int main(int argc, char *argv[])
                         -f - файл с данными датчика температуры;\n\
                         -m - месяц (по умолчанию текущий);\n\
                         -y - год (по умолчанию текущий)\n\
-                        -s - статистика по температуре:\n\
-                            mean - средняя за период,\n\
-                            max - максимальная за период,\n\
-                            min - минимальная за период.\n\
-                    Пример: prog.exe -f\"temperature.csv\" -m 5 -y 2021 -s max\
+                    Пример: prog.exe -f\"temperature.csv\" -m 5 -y 2021\
                 ");
             break;
             case 'f':
@@ -62,9 +58,6 @@ int main(int argc, char *argv[])
                 else
                     inp_year = now -> tm_year + 1900;
             }
-            break;
-            case 's':
-                strcpy(type_stat, optarg);
             break;
             case '?':
                 printf("Ошибка ввода параметров! Используйте параметр -h для просмотра справки\n");
@@ -97,29 +90,23 @@ int main(int argc, char *argv[])
             printf("ошибка в строке %d: %s", row_error, row);
     }
     fclose(source);
-    float stat_temp;
+    float mean_temp, max_temp, min_temp;
     int S;
     if (flag)
     {
-        if (!strcmp(type_stat,"mean"))
-            stat_temp = AverageMonthlyTemperature(temp_info, num_row, inp_month, inp_year);
-        if (!strcmp(type_stat,"min"))
-            stat_temp = MinimumTemperatureInAMonth(temp_info, num_row, inp_month, inp_year);
-        if (!strcmp(type_stat,"max"))
-            stat_temp = MaximumTemperatureInAMonth(temp_info, num_row, inp_month, inp_year);
+        mean_temp = AverageMonthlyTemperature(temp_info, num_row, inp_month, inp_year);
+        min_temp = MinimumTemperatureInAMonth(temp_info, num_row, inp_month, inp_year);
+        max_temp = MaximumTemperatureInAMonth(temp_info, num_row, inp_month, inp_year);
     }
     else
     {
-        if (!strcmp(type_stat,"mean"))
-            stat_temp = AverageAnnualTemperature(temp_info, num_row, inp_year); // средняя t за год
-        if (!strcmp(type_stat,"min"))
-            stat_temp = MinimumTemperatureForTheYear(temp_info, num_row, inp_year);
-        if (!strcmp(type_stat,"max"))
-            stat_temp = MaximumTemperatureForTheYear(temp_info, num_row, inp_year);
+        mean_temp = AverageAnnualTemperature(temp_info, num_row, inp_year);
+        min_temp = MinimumTemperatureForTheYear(temp_info, num_row, inp_year);
+        max_temp = MaximumTemperatureForTheYear(temp_info, num_row, inp_year);
     }
-    if (stat_temp == 1000 || stat_temp == -1000)
+    if (mean_temp == 1000 || max_temp == -1000 || min_temp == 1000)
         printf("Нет данных за выбранный период");
     else
-        printf("%.1f", stat_temp);
+        printf("Температура за выбранный период:\n\tсредняя %.1f\n\tминимальная %.1f\n\tмаксимальная %.1f", mean_temp, min_temp, max_temp);
     return 0;
 }
